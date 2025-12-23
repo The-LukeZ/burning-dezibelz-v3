@@ -1,5 +1,9 @@
 # Burning Dezibelz V2
 
+## Workflows
+
+- Deploy: remove `.svelte-kit/cloudflare` directory, then run `pnpm run deploy`
+
 ## Links
 
 - [Supabase Types](https://supabase.com/dashboard/project/oboimzyiexjbewvrnxvx/api?page=tables-intro)
