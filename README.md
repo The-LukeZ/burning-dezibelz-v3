@@ -1,38 +1,12 @@
-# sv
+# Burning Dezibelz V2
 
-Everything you need to build a Svelte project, powered by [`sv`](https://github.com/sveltejs/cli).
+## Links
 
-## Creating a project
+- [Supabase Types](https://supabase.com/dashboard/project/oboimzyiexjbewvrnxvx/api?page=tables-intro)
+- [CF Worker](https://dash.cloudflare.com/92d72ac72fb811275ce6e8d5263a9816/workers/services/view/burningdezibelz)
 
-If you're seeing this, you've probably already done this step. Congrats!
+## TODO
 
-```sh
-# create a new project in the current directory
-npx sv create
-
-# create a new project in my-app
-npx sv create my-app
-```
-
-## Developing
-
-Once you've created a project and installed dependencies with `npm install` (or `pnpm install` or `yarn`), start a development server:
-
-```sh
-npm run dev
-
-# or start the server and open the app in a new browser tab
-npm run dev -- --open
-```
-
-## Building
-
-To create a production version of your app:
-
-```sh
-npm run build
-```
-
-You can preview the production build with `npm run preview`.
-
-> To deploy your app, you may need to install an [adapter](https://svelte.dev/docs/kit/adapters) for your target environment.
+- Add bulk deletion of images by selecting them in the gallery
+- Make use of `pikaday` for date selection in the admin panel?
+- Add a way to download images from the gallery (atm: downloading isn't possible because R2 objects might not have a file extension)

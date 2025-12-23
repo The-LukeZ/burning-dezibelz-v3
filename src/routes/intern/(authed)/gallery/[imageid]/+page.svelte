@@ -1,0 +1,316 @@
+<script lang="ts">
+  import { goto } from "$app/navigation";
+  import { page } from "$app/state";
+  import {
+      buildImageUrl,
+      mimeTypeToExtension,
+      normalizeFolderName,
+      normalizeName,
+      removeExtension,
+  } from "$lib";
+  import ChevronLeft from "$lib/assets/ChevronLeft.svelte";
+  import ExpandArrows from "$lib/assets/ExpandArrows.svelte";
+  import Trashcan from "$lib/assets/Trashcan.svelte";
+  import XIcon from "$lib/assets/XIcon.svelte";
+  import { formatGermanDateTime } from "$lib/utils/concerts.js";
+  import { onMount } from "svelte";
+  import { fade, scale } from "svelte/transition";
+
+  let { supabase } = page.data;
+  let { data: pageData } = $props();
+  let imageId = $derived(page.params.imageid!);
+  let siteLoading = $state(false);
+  let error = $state<string | null>(null);
+  let image = $state<DBImage | null>(null);
+  /**
+   * The data used to update the image.
+   *
+   * ### `name` doesn't include the file extension!
+   */
+  const updateData = $state<Pick<DBImage, "name" | "folder" | "mime_type">>({
+    name: "",
+    folder: "",
+    mime_type: "image/webp",
+  });
+  let folderIsValid = $derived.by(() =>
+    !updateData.folder ? true : /^[A-Za-z0-9_\-.öäüß ]+$/.test(updateData.folder),
+  );
+  let copySuccess = $state(false);
+  let imageOnFullDisplay = $state(false);
+
+  async function loadImage() {
+    const { data, error: fetchError } = await supabase
+      .from("images")
+      .select("*")
+      .eq("id", imageId)
+      .eq("status", "completed")
+      .single();
+
+    if (fetchError) {
+      console.error("Error fetching image:", fetchError);
+      error = "Image not found";
+      return;
+    }
+
+    image = data;
+    updateData.name = removeExtension(data.name);
+    updateData.folder = data.folder || null;
+    updateData.mime_type = data.mime_type || "image/webp";
+  }
+
+  async function updateImage() {
+    if (!image || updateData.name.length < 3 || updateData.name.length > 256) {
+      error = "Bildname muss zwischen 3 und 256 Zeichen lang sein.";
+      return;
+    }
+
+    try {
+      siteLoading = true;
+      error = null;
+
+      const fullName =
+        `${normalizeName(updateData.name)}${mimeTypeToExtension(updateData.mime_type, true)}` as const;
+
+      const fullFolder = updateData.folder ? normalizeFolderName(updateData.folder) : null;
+
+      const response = await fetch("/api/cdn/update", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ imageId: image.id, newName: fullName, newFolder: fullFolder }),
+      });
+
+      if (!response.ok) {
+        throw new Error("Bild konnte nicht aktualisiert werden");
+      }
+
+      const updateJson = await response.json();
+      image.name = updateData.name;
+      image.folder = updateJson.folder || null;
+      image.r2_key = updateJson.r2_key;
+    } catch (err: any) {
+      error = err.message;
+      console.error("Update failed:", err);
+    } finally {
+      siteLoading = false;
+    }
+  }
+
+  async function deleteImage() {
+    if (!image || !confirm("Bist du sicher, dass du dieses Bild löschen möchtest?")) return;
+
+    try {
+      siteLoading = true;
+
+      const response = await fetch("/api/cdn/delete", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ imageIds: [image.id] }),
+      });
+
+      if (!response.ok) {
+        throw new Error("Bild konnte nicht gelöscht werden");
+      }
+
+      goto("/intern/gallery");
+    } catch (err: any) {
+      error = err.message;
+      console.error("Delete failed:", err);
+    } finally {
+      siteLoading = false;
+    }
+  }
+
+  async function shareImage() {
+    if (copySuccess || !image) return;
+    try {
+      await navigator.clipboard.writeText(
+        decodeURIComponent(page.url.origin + `/cdn/${encodeURIComponent(image.r2_key)}`),
+      );
+      copySuccess = true;
+      setTimeout(() => {
+        copySuccess = false;
+      }, 2000);
+    } catch (err) {
+      console.error("Failed to copy link:", err);
+    }
+  }
+
+  onMount(loadImage);
+</script>
+
+<div class="mx-auto flex w-full max-w-4xl flex-col items-center justify-center space-y-6 p-4">
+  <div class="grid w-full grid-cols-1 place-items-center gap-4 sm:grid-cols-3 sm:place-items-stretch">
+    <button class="dy-btn dy-btn-outline w-fit" onclick={() => goto("/intern/gallery")}>
+      <ChevronLeft />
+      Zurück zur Galerie
+    </button>
+    <h1 class="text-center text-2xl font-bold sm:text-3xl">Bilddetails</h1>
+    <div class="flex justify-end">
+      <button
+        class="dy-btn dy-btn-outline dy-btn-info dy-btn-sm"
+        onclick={shareImage}
+        class:dy-btn-success={copySuccess}
+      >
+        {#if copySuccess}
+          ✓ Kopiert!
+        {:else}
+          📋 Teilen
+        {/if}
+      </button>
+    </div>
+  </div>
+
+  {#if error}
+    <div class="dy-alert dy-alert-error w-full max-w-md">
+      <span>{error}</span>
+    </div>
+  {/if}
+
+  {#if image}
+    <div class="flex w-full flex-col items-start gap-6 md:flex-row">
+      <!-- Image Preview -->
+      <div class="flex w-full flex-col items-center lg:w-1/2">
+        <div class="bg-base-200 dy-skeleton relative w-full max-w-lg overflow-hidden rounded-lg shadow-lg">
+          <img src={buildImageUrl(image.r2_key)} alt={image.name} class="h-full w-full object-contain" />
+          <div class="absolute inset-0 top-0 right-0 bottom-0 left-0 grid place-items-center">
+            <button
+              class="dy-btn dy-btn-ghost dy-btn-warning dy-btn-square dy-btn-xl"
+              onclick={() => (imageOnFullDisplay = true)}
+            >
+              <ExpandArrows class="size-full" />
+            </button>
+          </div>
+        </div>
+        <p class="text-base-content/70 mt-2 text-sm">
+          Hochgeladen am: {formatGermanDateTime(image.created_at)}
+        </p>
+      </div>
+
+      <!-- Management Panel -->
+      <div class="flex w-full flex-col space-y-4 lg:w-1/2">
+        <div class="dy-card bg-base-200 shadow-lg">
+          <div class="dy-card-body">
+            <h2 class="dy-card-title">Bild bearbeiten</h2>
+            <form
+              onsubmit={(e) => {
+                e.preventDefault();
+                updateImage();
+              }}
+            >
+              <fieldset class="dy-fieldset">
+                <legend class="dy-fieldset-legend">Bildname</legend>
+                <input
+                  required
+                  type="text"
+                  class="dy-input dy-validator w-full"
+                  minlength="3"
+                  maxlength="256"
+                  pattern="[A-Za-z0-9_-\.]+"
+                  title="Nur Buchstaben, Zahlen, Unterstriche, Punkte und Bindestriche"
+                  placeholder="Dateiname"
+                  bind:value={updateData.name}
+                />
+                <p class="dy-validator-hint">
+                  Darf nur alphanumerische Zeichen, Unterstriche, Punkte und Bindestriche enthalten.
+                </p>
+              </fieldset>
+
+              <fieldset class="dy-fieldset">
+                <legend class="dy-fieldset-legend">Ordner</legend>
+                <input
+                  type="text"
+                  class="dy-input w-full"
+                  class:dy-input-error={!folderIsValid}
+                  class:dy-input-success={folderIsValid === true}
+                  bind:value={updateData.folder}
+                  placeholder="Ordner"
+                  title="Nur alphanumerische Zeichen, Unterstriche, Leerzeichen und Bindestriche"
+                  minlength="3"
+                  maxlength="64"
+                  list="folder-list"
+                />
+                <datalist id="folder-list">
+                  {#each pageData.folders as folder}
+                    <option value={folder}></option>
+                  {/each}
+                </datalist>
+                <span>Der Name des Ordners, in dem das Bild gruppiert ist.</span>
+
+                <p class="text-error" class:hidden={folderIsValid}>
+                  Nur alphanumerische Zeichen, Unterstriche, Leerzeichen und Bindestriche!
+                </p>
+              </fieldset>
+
+              <div class="flex justify-end space-x-2">
+                <button
+                  type="submit"
+                  class="dy-btn dy-btn-primary"
+                  disabled={siteLoading || updateData.name === image.name}
+                >
+                  {#if siteLoading}
+                    Aktualisiere...
+                  {:else}
+                    Bild aktualisieren
+                  {/if}
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+
+        <div class="dy-card bg-error/10 shadow-lg">
+          <div class="dy-card-body">
+            <h3 class="dy-card-title text-error">Gefahrenzone</h3>
+            <p class="text-base-content/70 text-sm">
+              Sobald du ein Bild löschst, gibt es kein Zurück mehr.<br />Bitte sei dir sicher.
+            </p>
+            <div class="dy-card-actions justify-end">
+              <button class="dy-btn dy-btn-error" disabled={siteLoading} onclick={deleteImage}>
+                <Trashcan />
+                Bild löschen
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  {:else if !error}
+    <div class="flex items-center justify-center">
+      <span class="dy-loading dy-loading-spinner dy-loading-lg"></span>
+    </div>
+  {/if}
+</div>
+
+<!-- Big ass popup which shows the image on full display when image is clicked -->
+{#if image && imageOnFullDisplay}
+  <div class="fixed inset-0 z-50 flex items-center justify-center bg-black/70 p-5" transition:fade>
+    <div class="big-image-container" transition:scale>
+      <img src={buildImageUrl(image.r2_key)} alt={image.name} class="rounded-lg shadow-lg" />
+      <button
+        class="dy-btn dy-btn-soft dy-btn-warning dy-btn-square absolute top-2 right-2"
+        onclick={() => (imageOnFullDisplay = false)}
+      >
+        <XIcon />
+      </button>
+    </div>
+  </div>
+{/if}
+
+<style>
+  .big-image-container {
+    position: relative;
+    height: 100%;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    img {
+      max-height: 100%;
+      max-width: 100%;
+      height: auto;
+      width: auto;
+      object-fit: contain;
+    }
+  }
+</style>

@@ -1,0 +1,141 @@
+<script lang="ts">
+  import { goto } from "$app/navigation";
+  import { EventStore } from "$lib/stores/events.svelte";
+  import type { Database } from "$lib/supabase";
+
+  let venueDetails = $state<Database["public"]["Tables"]["venues"]["Insert"]>({
+    name: "",
+    address: "",
+    city: "",
+    country: "Deutschland",
+    postal_code: "",
+    state: "",
+    url: "",
+  });
+
+  let loading = $state(false);
+  let error = $state(null);
+
+  async function handleSubmit() {
+    if (!EventStore.venues) return console.error("Venue Map null???");
+    loading = true;
+    error = null;
+
+    try {
+      // Combine timestamp and time
+      const venueData: Omit<VenueDetails, "id"> = {
+        name: venueDetails.name,
+        address: venueDetails.address,
+        city: venueDetails.city,
+        country: venueDetails.country,
+        postal_code: venueDetails.postal_code,
+        state: venueDetails.state,
+        url: venueDetails.url,
+      };
+
+
+
+      const response = await fetch("/api/venues", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(venueData),
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.error?.message || "Veranstaltungsort konnte nicht erstellt werden");
+      }
+
+      const data = await response.json();
+
+      EventStore.venues.set(data.id, data);
+
+      // Navigate back to concerts list on success
+      goto("/intern/venues");
+    } catch (err: any) {
+      error = err.message;
+    } finally {
+      loading = false;
+    }
+  }
+</script>
+
+<div class="container mx-auto flex h-full max-w-xl flex-col gap-4">
+  <h1 class="text-2xl font-bold">Neuen Veranstaltungsort hinzufügen</h1>
+
+  {#if error}
+    <div class="dy-alert dy-alert-error">
+      <span>{error}</span>
+    </div>
+  {/if}
+
+  <fieldset class="dy-fieldset">
+    <legend class="dy-fieldset-legend">Name</legend>
+    <input type="text" name="name" bind:value={venueDetails.name} class="dy-input" />
+  </fieldset>
+
+  <fieldset class="dy-fieldset">
+    <legend class="dy-fieldset-legend">Adresse</legend>
+    <input
+      type="text"
+      name="address"
+      bind:value={venueDetails.address}
+      class="dy-input"
+      placeholder="Musterstraße 31"
+    />
+  </fieldset>
+
+  <fieldset class="dy-fieldset">
+    <legend class="dy-fieldset-legend">Postleitzahl</legend>
+    <input
+      type="text"
+      name="postal_code"
+      bind:value={venueDetails.postal_code}
+      class="dy-input"
+      placeholder="12345"
+    />
+  </fieldset>
+
+  <fieldset class="dy-fieldset">
+    <legend class="dy-fieldset-legend">Stadt</legend>
+    <input type="text" name="city" bind:value={venueDetails.city} class="dy-input" placeholder="Zwickau" />
+  </fieldset>
+
+  <fieldset class="dy-fieldset">
+    <legend class="dy-fieldset-legend">Bundesland</legend>
+    <input type="text" name="state" bind:value={venueDetails.state} class="dy-input" placeholder="Sachsen" />
+  </fieldset>
+
+  <fieldset class="dy-fieldset">
+    <legend class="dy-fieldset-legend">Land</legend>
+    <input
+      type="text"
+      name="country"
+      bind:value={venueDetails.country}
+      class="dy-input"
+      placeholder="Deutschland"
+    />
+    <p class="dy-label dy-label-info">Bearbeite dies nur, wenn du weißt, was du tust.</p>
+  </fieldset>
+
+  <fieldset class="dy-fieldset">
+    <legend class="dy-fieldset-legend">Veranstaltungsort URL</legend>
+    <input
+      type="text"
+      name="url"
+      bind:value={venueDetails.url}
+      class="dy-input"
+      placeholder="https://example.com"
+      required
+    />
+  </fieldset>
+
+  <div class="mt-2 flex flex-row justify-end gap-4">
+    <button class="dy-btn dy-btn-error" onclick={() => goto("/intern/venues")}>Abbrechen</button>
+    <button class="dy-btn dy-btn-primary" disabled={loading} onclick={handleSubmit}>
+      {loading ? "Erstelle..." : "Veranstaltungsort erstellen"}
+    </button>
+  </div>
+</div>
