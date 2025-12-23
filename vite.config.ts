@@ -5,5 +5,16 @@ import { defineConfig } from "vite";
 import { sentrySvelteKit } from "@sentry/sveltekit";
 
 export default defineConfig({
-  plugins: [sentrySvelteKit(), tailwindcss(), sveltekit(), devtoolsJson()],
+  plugins: [
+    sentrySvelteKit({
+      sourceMapsUploadOptions: {
+        org: "lukez-dev",
+        project: "burning-dezibelz",
+        authToken: process.env.SENTRY_AUTH_TOKEN,
+      },
+    }),
+    tailwindcss(),
+    sveltekit(),
+    devtoolsJson(),
+  ],
 });
