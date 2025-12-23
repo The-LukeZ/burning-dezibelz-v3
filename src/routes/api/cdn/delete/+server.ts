@@ -3,7 +3,10 @@ import { getR2FromEvent } from "$lib/server/s3.js";
 import * as Sentry from "@sentry/sveltekit";
 
 export async function POST(event) {
-  const { request, locals: { supabase } } = event;
+  const {
+    request,
+    locals: { supabase },
+  } = event;
 
   try {
     const R2 = getR2FromEvent(event);

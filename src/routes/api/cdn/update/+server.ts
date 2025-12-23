@@ -3,7 +3,10 @@ import { JsonErrors } from "$lib/constants.js";
 import { getR2FromEvent } from "$lib/server/s3";
 
 export async function POST(event) {
-  const { request, locals: { supabase } } = event;
+  const {
+    request,
+    locals: { supabase },
+  } = event;
 
   try {
     const R2 = getR2FromEvent(event);

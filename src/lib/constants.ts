@@ -12,13 +12,7 @@ export const UnknownVenue: VenueDetails = {
   url: "https://example.com/unknown-venue",
 } as const;
 
-export const allowedMimeTypes = [
-  "image/jpeg",
-  "image/png",
-  "image/webp",
-  "image/gif",
-  "image/avif",
-] as const;
+export const allowedMimeTypes = ["image/jpeg", "image/png", "image/webp", "image/gif", "image/avif"] as const;
 
 export const allowedImageExtensions = ["jpg", "jpeg", "png", "webp", "gif", "avif"] as const;
 

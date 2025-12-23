@@ -14,7 +14,7 @@ export async function GET({ params: { concert_id }, locals: { supabase } }) {
 
 export async function PUT({ request, locals: { supabase }, params: { concert_id } }) {
   // Update a concert by replacing the entire object (except the id)
-  const body = await request.json();
+  const body = await request.json<any>();
   const cleanedData = Object.keys(body).reduce((acc, key) => {
     acc[key] = typeof body[key] === "string" ? body[key].trim() : body[key];
     return acc;
