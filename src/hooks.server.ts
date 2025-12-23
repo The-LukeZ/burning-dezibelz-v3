@@ -7,13 +7,6 @@ import { NODE_ENV } from "$env/static/private";
 import { PUBLIC_SUPABASE_URL, PUBLIC_SUPABASE_PUBLISHABLE_KEY } from "$env/static/public";
 import wildcardMatch from "wildcard-match";
 
-Sentry.init({
-  dsn: "https://06efed1d6f63b2a8d08dd59c1d3bcaa9@o4508704165265408.ingest.de.sentry.io/4509417747316816",
-  tracesSampleRate: 0.7,
-  enableLogs: true,
-  sendDefaultPii: true,
-});
-
 export async function init() {
   console.log("App starting...");
 }
@@ -164,6 +157,12 @@ const authUserMiddleware: Handle = async ({ event, resolve }) => {
 };
 
 export const handle = sequence(
+  Sentry.initCloudflareSentryHandle({
+    dsn: "https://06efed1d6f63b2a8d08dd59c1d3bcaa9@o4508704165265408.ingest.de.sentry.io/4509417747316816",
+    sendDefaultPii: true,
+    enableLogs: true,
+    tracesSampleRate: 0.7,
+  }),
   Sentry.sentryHandle(),
   baseHandle,
   supabase,
