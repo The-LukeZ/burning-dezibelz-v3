@@ -108,7 +108,7 @@ export async function GET(event) {
   }
 
   // --- KV Cache Check (skip for transformed images) ---
-  const kv = platform?.env.IMAGE_CACHE as KVNamespace | undefined;
+  const kv = platform?.env.BD_IMAGE_CACHE;
 
   if (!shouldTransform && kv) {
     const cached = await getCachedImage(kv, imageName);
