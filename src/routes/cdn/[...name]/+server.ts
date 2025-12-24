@@ -19,6 +19,20 @@ async function setCachedImage(kv: KVNamespace, key: string, entry: CacheEntry): 
   await kv.put(key, JSON.stringify(entry), { expirationTtl: CACHE_TTL_SECONDS });
 }
 
+// Helper to convert ArrayBuffer to base64 without stack overflow
+function arrayBufferToBase64(buffer: ArrayBuffer): string {
+  const bytes = new Uint8Array(buffer);
+  const chunkSize = 0x8000; // 32KB chunks to avoid call stack issues
+  let binary = "";
+
+  for (let i = 0; i < bytes.length; i += chunkSize) {
+    const chunk = bytes.subarray(i, i + chunkSize);
+    binary += String.fromCharCode.apply(null, chunk as unknown as number[]);
+  }
+
+  return btoa(binary);
+}
+
 // --- Image Transform Options ---
 interface TransformOptions {
   width?: number;
@@ -183,7 +197,7 @@ export async function GET(event) {
     // Cache the transformed image
     if (kv) {
       try {
-        const base64 = btoa(String.fromCharCode(...new Uint8Array(transformedBuffer)));
+        const base64 = arrayBufferToBase64(transformedBuffer);
         const cacheEntry: CacheEntry = {
           buffer: base64,
           contentType: transformedContentType,
@@ -219,7 +233,7 @@ export async function GET(event) {
     // Store in KV cache (skip for internal transform requests to avoid duplicate caching)
     if (kv && !isInternalTransformRequest) {
       try {
-        const base64 = btoa(String.fromCharCode(...new Uint8Array(arrayBuffer)));
+        const base64 = arrayBufferToBase64(arrayBuffer);
         const cacheEntry: CacheEntry = {
           buffer: base64,
           contentType: originalContentType,
