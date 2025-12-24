@@ -1,9 +1,7 @@
 import { JsonErrors } from "$lib/constants.js";
 import { generateConcertId } from "$lib/server/utils.js";
 import type { Database } from "$lib/supabase.js";
-import { ConcertCreateSchema } from "$lib/utils/assertions.js";
 import { ConcertCreateValidator } from "$lib/utils/validator";
-import { fromError as FromZodError, ValidationError } from "zod-validation-error";
 
 /*
 Available query parameters:

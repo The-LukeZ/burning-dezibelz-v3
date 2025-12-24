@@ -14,6 +14,12 @@ declare global {
   namespace App {
     // interface Error {}
 
+    interface Platform {
+      env: Env;
+      cf: CfProperties;
+      ctx: ExecutionContext;
+    }
+
     interface Locals {
       supabase: SupabaseClient<Database>;
       safeGetSession(): Promise<{ session: Session | null; user?: Session["user"] | null }>;
@@ -40,12 +46,6 @@ declare global {
     }
 
     // interface PageState {}
-
-    interface Platform {
-      env: Env;
-      cf: CfProperties;
-      ctx: ExecutionContext;
-    }
   }
 
   type Concert = Database["public"]["Tables"]["concerts"]["Row"];
