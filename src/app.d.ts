@@ -8,7 +8,31 @@ declare global {
     // interface Error {}
 
     interface Platform {
-      env: Env;
+      env: {
+        // Usually, its enough to just import the `Env` here since the worker types already did the heavy lifting
+        // Now, because of some god-forsaken reason, we have to redeclare them here too
+        BD_IMAGE_CACHE: KVNamespace;
+        ORIGIN: string;
+        HOST: string;
+        PORT: string;
+        PUBLIC_SUPABASE_URL: string;
+        PUBLIC_SUPABASE_PUBLISHABLE_KEY: string;
+        SUPABASE_SECRET_KEY: string;
+        SUPABASE_JWT_SECRET: string;
+        GOOGLE_CLIENT_ID: string;
+        GOOGLE_CLIENT_SECRET: string;
+        CF_ACCOUNT_ID: string;
+        CF_ACCOUNT_TOKEN: string;
+        CF_ACCOUNT_HASH: string;
+        PUBLIC_TURNSTILE_SITE_KEY: string;
+        TURNSTILE_SECRET: string;
+        SENTRY_AUTH_TOKEN: string;
+        SENTRY_LOG_LEVEL: string;
+        R2_IMAGES: R2Bucket;
+        CDN_RATELIMIT: RateLimit;
+        CF_VERSION_METADATA: WorkerVersionMetadata;
+        ASSETS: Fetcher;
+      };
       cf: CfProperties;
       ctx: ExecutionContext;
     }
