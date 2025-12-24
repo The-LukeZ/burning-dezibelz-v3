@@ -7,7 +7,16 @@ const config = {
   // for more information about preprocessors
   preprocess: vitePreprocess(),
   kit: {
-    adapter: adapter(),
+    adapter: adapter({
+      platformProxy: {
+        configPath: "./wrangler.jsonc",
+        envFiles: ["./.env.development"],
+        environment: "development",
+        persist: true,
+        remoteBindings: true,
+      },
+      fallback: "plaintext",
+    }),
     experimental: {
       instrumentation: {
         server: true,
