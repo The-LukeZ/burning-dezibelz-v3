@@ -4,13 +4,6 @@ import type { Graph, Thing, WithContext } from "schema-dts";
 
 // for information about these interfaces
 declare global {
-  interface Window {
-    turnstile: {
-      remove: (widgetId: string) => void;
-      render: (element: HTMLElement, options: any) => string;
-    };
-  }
-
   namespace App {
     // interface Error {}
 
@@ -46,6 +39,13 @@ declare global {
     }
 
     // interface PageState {}
+  }
+
+  interface Window {
+    turnstile: {
+      remove: (widgetId: string) => void;
+      render: (element: HTMLElement, options: any) => string;
+    };
   }
 
   type Concert = Database["public"]["Tables"]["concerts"]["Row"];
