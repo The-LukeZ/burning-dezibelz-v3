@@ -63,7 +63,7 @@ function parseTransformParams(url: URL): TransformOptions {
 }
 
 function hasTransformations(options: TransformOptions): boolean {
-  return !!(options.width || options.height || options.format || options.quality);
+  return !!(options.width || options.height || options.format || options.quality || options.fit);
 }
 
 function buildCacheKey(imageName: string, options: TransformOptions): string {
@@ -79,32 +79,17 @@ function buildCacheKey(imageName: string, options: TransformOptions): string {
   return parts.join("_");
 }
 
-function buildCfImageOptions(options: TransformOptions): string {
-  const parts: string[] = [];
-
-  if (options.width) parts.push(`width=${options.width}`);
-  if (options.height) parts.push(`height=${options.height}`);
-  if (options.format) parts.push(`format=${options.format}`);
-  if (options.quality) parts.push(`quality=${options.quality}`);
-  if (options.fit) parts.push(`fit=${options.fit}`);
-
-  return parts.join(",");
-}
-
 // --- GET Request Handler ---
 export async function GET(event) {
   const { params, getClientAddress, url, platform, request } = event;
   const imageName = params.name;
-
-  // Check if this is an internal request from Cloudflare Image Resizing
-  const isInternalTransformRequest = request.headers.get("via")?.includes("image-resizing");
 
   if (!imageName) {
     return JsonErrors.badRequest("Image name parameter is missing.");
   }
 
   const transformOptions = parseTransformParams(url);
-  const shouldTransform = hasTransformations(transformOptions) && !isInternalTransformRequest;
+  const shouldTransform = hasTransformations(transformOptions);
   const cacheKey = buildCacheKey(imageName, transformOptions);
 
   // --- Rate Limiting ---
@@ -116,10 +101,10 @@ export async function GET(event) {
     return JsonErrors.tooManyRequests("Too Many Requests");
   }
 
-  // --- KV Cache Check (skip for internal transform requests) ---
+  // --- KV Cache Check ---
   const kv = platform?.env.BD_IMAGE_CACHE;
 
-  if (kv && !isInternalTransformRequest) {
+  if (kv) {
     const cached = await getCachedImage(kv, cacheKey);
     if (cached) {
       console.log(`[Cache] HIT for image: ${cacheKey}`);
@@ -135,90 +120,10 @@ export async function GET(event) {
     }
   }
 
-  console.log(
-    `[Cache] MISS for image: ${cacheKey}${shouldTransform ? " (transformation requested)" : ""}${isInternalTransformRequest ? " (internal transform fetch)" : ""}`,
-  );
+  console.log(`[Cache] MISS for image: ${cacheKey}${shouldTransform ? " (transformation requested)" : ""}`);
 
-  // If transformations are requested and this is NOT an internal request,
-  // redirect to the /cdn-cgi/image/ endpoint
-  if (shouldTransform) {
-    const cfOptions = buildCfImageOptions(transformOptions);
-    const origin = url.origin;
-
-    // Build the /cdn-cgi/image/ URL that points back to our CDN route (without transform params)
-    const originalImageUrl = `${origin}/cdn/${imageName}`;
-    const transformUrl = `${origin}/cdn-cgi/image/${cfOptions}/${originalImageUrl}`;
-
-    console.log(`[Transform] Redirecting to: ${transformUrl}`);
-
-    // Fetch the transformed image from Cloudflare's image resizing service
-    const transformedResponse = await fetch(transformUrl, {
-      headers: {
-        // Pass through accept header for format negotiation
-        Accept: request.headers.get("Accept") || "image/*",
-      },
-    });
-
-    if (!transformedResponse.ok) {
-      console.warn(
-        `[Transform] Cloudflare Image Resizing failed (${transformedResponse.status}), returning original`,
-      );
-      // Fallback to original image
-      try {
-        const R2 = getR2FromEvent(event);
-        const r2Object = await R2.get(imageName);
-
-        if (!r2Object) {
-          return JsonErrors.notFound("Image not found");
-        }
-
-        const arrayBuffer = await r2Object.arrayBuffer();
-        const contentType = r2Object.httpMetadata?.contentType || "application/octet-stream";
-
-        return new Response(arrayBuffer, {
-          headers: {
-            "Content-Type": contentType,
-            "X-Cache-Status": "MISS-TRANSFORM-FAILED",
-            ETag: r2Object.etag || "",
-            "Cache-Control": "public, max-age=86400",
-          },
-        });
-      } catch (fallbackErr: any) {
-        console.error(`[Fallback Error] ${fallbackErr.message}`);
-        return JsonErrors.serverError("Failed to fetch image");
-      }
-    }
-
-    const transformedBuffer = await transformedResponse.arrayBuffer();
-    const transformedContentType =
-      transformedResponse.headers.get("Content-Type") ||
-      (transformOptions.format ? `image/${transformOptions.format}` : "application/octet-stream");
-
-    // Cache the transformed image
-    if (kv) {
-      try {
-        const base64 = arrayBufferToBase64(transformedBuffer);
-        const cacheEntry: CacheEntry = {
-          buffer: base64,
-          contentType: transformedContentType,
-        };
-        await setCachedImage(kv, cacheKey, cacheEntry);
-      } catch (cacheErr) {
-        console.warn(`[Cache] Failed to cache transformed image: ${cacheErr}`);
-      }
-    }
-
-    return new Response(transformedBuffer, {
-      headers: {
-        "Content-Type": transformedContentType,
-        "X-Cache-Status": "MISS-TRANSFORMED",
-        "Cache-Control": "public, max-age=86400",
-      },
-    });
-  }
-
-  // No transformation or internal request - fetch from R2 and return original
   try {
+    // Fetch from R2 first to check if image exists
     const R2 = getR2FromEvent(event);
     const r2Object = await R2.get(imageName);
 
@@ -228,10 +133,75 @@ export async function GET(event) {
 
     const originalContentType = r2Object.httpMetadata?.contentType || "application/octet-stream";
     const eTag = r2Object.etag;
+
+    // If transformations are requested, use Cloudflare Image Resizing
+    if (shouldTransform) {
+      console.log(`[Transform] Applying transformations:`, transformOptions);
+
+      // Build the URL to the original image on our CDN
+      const originalImageUrl = `${url.origin}/cdn/${imageName}`;
+
+      // Fetch with Cloudflare Image Resizing options
+      const transformedResponse = await fetch(originalImageUrl, {
+        cf: {
+          image: transformOptions,
+        },
+        headers: {
+          Accept: request.headers.get("Accept") || "image/*",
+        },
+      });
+
+      if (!transformedResponse.ok) {
+        console.warn(
+          `[Transform] Cloudflare Image Resizing failed (${transformedResponse.status}), returning original`,
+        );
+
+        // Fallback to original image
+        const arrayBuffer = await r2Object.arrayBuffer();
+        return new Response(arrayBuffer, {
+          headers: {
+            "Content-Type": originalContentType,
+            "X-Cache-Status": "MISS-TRANSFORM-FAILED",
+            ETag: eTag || "",
+            "Cache-Control": "public, max-age=86400",
+          },
+        });
+      }
+
+      const transformedBuffer = await transformedResponse.arrayBuffer();
+      const transformedContentType =
+        transformedResponse.headers.get("Content-Type") ||
+        (transformOptions.format ? `image/${transformOptions.format}` : originalContentType);
+
+      // Cache the transformed image
+      if (kv) {
+        try {
+          const base64 = arrayBufferToBase64(transformedBuffer);
+          const cacheEntry: CacheEntry = {
+            buffer: base64,
+            contentType: transformedContentType,
+          };
+          await setCachedImage(kv, cacheKey, cacheEntry);
+          console.log(`[Cache] Stored transformed image: ${cacheKey}`);
+        } catch (cacheErr) {
+          console.warn(`[Cache] Failed to cache transformed image: ${cacheErr}`);
+        }
+      }
+
+      return new Response(transformedBuffer, {
+        headers: {
+          "Content-Type": transformedContentType,
+          "X-Cache-Status": "MISS-TRANSFORMED",
+          "Cache-Control": "public, max-age=86400",
+        },
+      });
+    }
+
+    // No transformation - return original from R2
     const arrayBuffer = await r2Object.arrayBuffer();
 
-    // Store in KV cache (skip for internal transform requests to avoid duplicate caching)
-    if (kv && !isInternalTransformRequest) {
+    // Store original in KV cache
+    if (kv) {
       try {
         const base64 = arrayBufferToBase64(arrayBuffer);
         const cacheEntry: CacheEntry = {
@@ -240,6 +210,7 @@ export async function GET(event) {
           eTag,
         };
         await setCachedImage(kv, cacheKey, cacheEntry);
+        console.log(`[Cache] Stored original image: ${cacheKey}`);
       } catch (cacheErr) {
         console.warn(`[Cache] Failed to cache original image: ${cacheErr}`);
       }
@@ -248,7 +219,7 @@ export async function GET(event) {
     return new Response(arrayBuffer, {
       headers: {
         "Content-Type": originalContentType,
-        "X-Cache-Status": isInternalTransformRequest ? "ORIGIN" : "MISS",
+        "X-Cache-Status": "MISS",
         ETag: eTag || "",
         "Cache-Control": "public, max-age=86400",
       },
