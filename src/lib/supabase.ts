@@ -57,6 +57,24 @@ export type Database = {
         };
         Relationships: [];
       };
+      announcements: {
+        Row: {
+          content: string;
+          created_at: string;
+          id: number;
+        };
+        Insert: {
+          content: string;
+          created_at?: string;
+          id?: number;
+        };
+        Update: {
+          content?: string;
+          created_at?: string;
+          id?: number;
+        };
+        Relationships: [];
+      };
       concerts: {
         Row: {
           abendkasse: boolean;
