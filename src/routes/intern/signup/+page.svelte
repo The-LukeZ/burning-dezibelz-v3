@@ -30,6 +30,7 @@
     password === passwordConfirm
   );
 </script>
+
 <div class="absolute top-0 right-0 bottom-0 left-0 flex flex-col items-center justify-center gap-4 p-4">
   <div class="w-full max-w-sm">
     <h1 class="mb-6 text-center text-2xl font-bold">Registrierung</h1>
