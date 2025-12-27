@@ -29,3 +29,10 @@ export const VenueSchema = z.object({
   country: z.string().min(1),
   url: z.string().url(),
 });
+
+export const ContactSchema = z.object({
+  email: z.string().email("Ungültige E-Mail-Adresse").max(255),
+  subject: z.string().trim().min(1).max(255),
+  message: z.string().trim().min(1).max(5000),
+  turnstileToken: z.string().trim().min(1),
+});
