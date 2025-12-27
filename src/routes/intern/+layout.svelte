@@ -17,14 +17,6 @@
   }}
 />
 
-<svelte:head>
-  <script
-    src="https://challenges.cloudflare.com/turnstile/v0/api.js"
-    async
-    defer
-  ></script>
-</svelte:head>
-
 <div class="dash-container">
   {@render children()}
 </div>
