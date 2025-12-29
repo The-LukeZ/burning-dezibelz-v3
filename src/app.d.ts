@@ -15,6 +15,7 @@ declare global {
         ORIGIN: string;
         HOST: string;
         PORT: string;
+        NODE_ENV: "development" | "production" | "test";
         PUBLIC_SUPABASE_URL: string;
         PUBLIC_SUPABASE_PUBLISHABLE_KEY: string;
         SUPABASE_SECRET_KEY: string;
