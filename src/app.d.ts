@@ -18,7 +18,6 @@ declare global {
         PUBLIC_SUPABASE_URL: string;
         PUBLIC_SUPABASE_PUBLISHABLE_KEY: string;
         SUPABASE_SECRET_KEY: string;
-        SUPABASE_JWT_SECRET: string;
         GOOGLE_CLIENT_ID: string;
         GOOGLE_CLIENT_SECRET: string;
         CF_ACCOUNT_ID: string;
@@ -28,6 +27,7 @@ declare global {
         TURNSTILE_SECRET: string;
         SENTRY_AUTH_TOKEN: string;
         SENTRY_LOG_LEVEL: string;
+        RESEND_API_KEY: string;
         R2_IMAGES: R2Bucket;
         CDN_RATELIMIT: RateLimit;
         CF_VERSION_METADATA: WorkerVersionMetadata;
