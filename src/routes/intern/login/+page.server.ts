@@ -28,8 +28,8 @@ async function verifyCaptcha(token: string): Promise<boolean> {
     }),
   });
 
-  const data = await response.json();
-  return data.success as boolean;
+  const data = (await response.json()) as { success: boolean };
+  return data.success;
 }
 
 function validateNextUrl(next: string) {
@@ -82,7 +82,7 @@ export const actions = {
       });
     }
 
-    const { error: err } = await supabase.auth.signInWithPassword({
+    const { error: err, data } = await supabase.auth.signInWithPassword({
       email,
       password,
       options: {
