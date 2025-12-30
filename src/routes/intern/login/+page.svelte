@@ -3,6 +3,8 @@
   import { goto } from "$app/navigation";
   import { page } from "$app/state";
   import ChevronLeft from "$lib/assets/ChevronLeft.svelte";
+  import EyeClosed from "$lib/assets/EyeClosed.svelte";
+  import EyeOpen from "$lib/assets/EyeOpen.svelte";
   import Turnstile from "$lib/components/Turnstile.svelte";
   import { onMount } from "svelte";
 
@@ -17,6 +19,7 @@
 
   // Password validation state
   let password = $state("");
+  let passwordVisible = $state(false);
   const passwordMinLength = 8;
   const isPasswordValid = $derived(password.length >= passwordMinLength);
 
@@ -127,22 +130,36 @@
             placeholder="E-Mail"
             value={form?.email ?? ''}
             required
-            class="dy-input dy-input-bordered w-full"
+            class="dy-input w-full"
             autocomplete="email"
           />
           <span>E-Mail</span>
         </label>
 
         <label class="dy-floating-label w-full">
-          <input
-            type="password"
-            name="password"
-            placeholder="Passwort"
-            required
-            class="dy-input dy-input-bordered w-full {password.length > 0 && !isPasswordValid ? 'dy-input-error' : ''}"
-            autocomplete="current-password"
-            bind:value={password}
-          />
+          <div class="dy-join dy-join-horizontal w-full">
+            <input
+              type={passwordVisible ? "text" : "password"}
+              name="password"
+              placeholder="Passwort"
+              required
+              class="dy-input dy-join-item w-full {password.length > 0 && !isPasswordValid ? 'dy-input-error' : ''}"
+              autocomplete="current-password"
+              bind:value={password}
+            />
+            <button
+              type="button"
+              class="dy-btn dy-btn-primary dy-join-item dy-btn-square"
+              onclick={() => (passwordVisible = !passwordVisible)}
+              tabindex="-1"
+            >
+              {#if passwordVisible}
+                <EyeOpen />
+              {:else}
+                <EyeClosed />
+              {/if}
+            </button>
+          </div>
           <span>Passwort</span>
         </label>
 
@@ -179,7 +196,7 @@
             name="email"
             placeholder="E-Mail"
             required
-            class="dy-input dy-input-bordered w-full"
+            class="dy-input w-full"
             autocomplete="email"
           />
           <span>E-Mail</span>

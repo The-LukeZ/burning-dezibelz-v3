@@ -1,6 +1,8 @@
 <script lang="ts">
   import { enhance } from "$app/forms";
   import ChevronLeft from "$lib/assets/ChevronLeft.svelte";
+  import EyeClosed from "$lib/assets/EyeClosed.svelte";
+  import EyeOpen from "$lib/assets/EyeOpen.svelte";
   import Turnstile from "$lib/components/Turnstile.svelte";
 
   let { form } = $props<{ form: { message?: string; email?: string; success?: boolean } | null }>();
@@ -11,6 +13,7 @@
 
   // Password validation state
   let password = $state("");
+  let passwordVisible = $state(false);
   let passwordConfirm = $state("");
   
   const passwordMinLength = 8;
@@ -95,7 +98,7 @@
           placeholder="E-Mail"
           value={form?.email ?? ""}
           required
-          class="dy-input dy-input-bordered w-full"
+          class="dy-input w-full"
           autocomplete="email"
         />
         <span>E-Mail</span>
@@ -108,7 +111,7 @@
           placeholder="Passwort"
           required
           minlength="8"
-          class="dy-input dy-input-bordered w-full {password.length > 0 && password.length < passwordMinLength ? 'dy-input-error' : password.length >= passwordMinLength ? 'dy-input-success' : ''}"
+          class="dy-input w-full {password.length > 0 && password.length < passwordMinLength ? 'dy-input-error' : password.length >= passwordMinLength ? 'dy-input-success' : ''}"
           autocomplete="new-password"
           bind:value={password}
         />
@@ -116,16 +119,30 @@
       </label>
 
       <label class="dy-floating-label w-full">
-        <input
-          type="password"
-          name="passwordConfirm"
-          placeholder="Passwort bestätigen"
-          required
-          minlength="8"
-          class="dy-input dy-input-bordered w-full {passwordConfirm.length > 0 && password !== passwordConfirm ? 'dy-input-error' : passwordConfirm.length > 0 && password === passwordConfirm ? 'dy-input-success' : ''}"
-          autocomplete="new-password"
-          bind:value={passwordConfirm}
-        />
+        <div class="dy-join dy-join-horizontal w-full">
+          <input
+            type={passwordVisible ? "text" : "password"}
+            name="passwordConfirm"
+            placeholder="Passwort bestätigen"
+            required
+            minlength="8"
+            class="dy-input dy-join-item w-full {passwordConfirm.length > 0 && password !== passwordConfirm ? 'dy-input-error' : passwordConfirm.length > 0 && password === passwordConfirm ? 'dy-input-success' : ''}"
+            autocomplete="new-password"
+            bind:value={passwordConfirm}
+          />
+          <button
+            type="button"
+            class="dy-btn dy-btn-primary dy-join-item dy-btn-square"
+            onclick={() => (passwordVisible = !passwordVisible)}
+            tabindex="-1"
+          >
+            {#if passwordVisible}
+              <EyeOpen />
+            {:else}
+              <EyeClosed />
+            {/if}
+          </button>
+        </div>
         <span>Passwort bestätigen</span>
       </label>
 
