@@ -19,6 +19,7 @@
     error = null;
     success = null;
     isSubmitting = true;
+    const mData = $state.snapshot(mailData);
 
     try {
       const response = await fetch("/api/contact", {
@@ -27,9 +28,8 @@
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          email: mailData.email,
-          subject: mailData.subject,
-          message: mailData.body,
+          ...mData,
+          message: mData.body,
           turnstileToken: cfToken,
         }),
       });
