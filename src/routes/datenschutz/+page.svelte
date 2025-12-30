@@ -50,6 +50,23 @@
     </section>
 
     <section>
+      <h2>4. Nutzung von Supabase</h2>
+      <p>
+        Unsere Website nutzt Supabase als Backend-Dienstleister und Datenbank. Supabase verarbeitet Daten gemäß ihrer <a href="https://supabase.com/privacy">Datenschutzerklärung</a>.
+      </p>
+    </section>
+
+    <section>
+      <h2>5. Verarbeitung personenbezogener Daten</h2>
+      <p>
+        Sie haben die Möglichkeit, beim Kontaktformular personenbezogene Daten wie die E-Mail-Adresse anzugeben. Diese Daten werden ausschließlich zur Bearbeitung Ihrer Anfrage verwendet und nicht an Dritte weitergegeben. Dies trifft auch auf den Betreff und die Nachricht zu, die Sie uns über das Kontaktformular senden.
+      </p>
+      <p>
+        Die Verarbeitung dieser Daten erfolgt auf Grundlage Ihrer Einwilligung gemäß Art. 6 Abs. 1 lit. a DSGVO. Sie können Ihre Einwilligung jederzeit widerrufen, indem Sie uns kontaktieren.
+      </p>
+    </section>
+
+    <section>
       <h2>4. Interner Bereich & Authentifizierung</h2>
       <p>
         Unsere Website verfügt über einen internen Bereich, der ausschließlich für autorisierte Mitglieder der Band bestimmt ist. Man kann sich mittels Email + Passwort, Magic Link oder Google OAuth anmelden.
