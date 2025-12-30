@@ -67,7 +67,7 @@
     </section>
 
     <section>
-      <h2>4. Interner Bereich & Authentifizierung</h2>
+      <h2>6. Interner Bereich & Authentifizierung</h2>
       <p>
         Unsere Website verfügt über einen internen Bereich, der ausschließlich für autorisierte Mitglieder der Band bestimmt ist. Man kann sich mittels Email + Passwort, Magic Link oder Google OAuth anmelden.
       </p>
@@ -86,7 +86,7 @@
     </section>
 
     <section>
-      <h2>5. Kontakt</h2>
+      <h2>7. Kontakt</h2>
       <p>
         Bei Fragen zum Datenschutz können Sie uns über die im <a href="/impressum">Impressum</a> angegebenen Kontaktdaten erreichen.
       </p>
