@@ -39,6 +39,7 @@
   "dependencies": {
     "@sapphire/snowflake": "^3.5.5",
     "@sentry/sveltekit": "^9.47.1",
+    "@supabase/ssr": "^0.8.0",
     "@supabase/supabase-js": "^2.89.0",
     "dayjs": "^1.11.19",
     "fast-deep-equal": "^3.1.3",

@@ -5,7 +5,8 @@ import { sequence } from "@sveltejs/kit/hooks";
 import { NODE_ENV, SUPABASE_SECRET_KEY } from "$env/static/private";
 import { PUBLIC_SUPABASE_URL } from "$env/static/public";
 import wildcardMatch from "wildcard-match";
-import { createClient } from "@supabase/supabase-js";
+import { createServerClient } from "@supabase/ssr";
+import type { Database } from "$lib/supabase";
 
 export async function init() {
   console.log("App starting...");
@@ -19,15 +20,15 @@ const baseHandle: Handle = async ({ event, resolve }) => {
 };
 
 const supabase: Handle = async ({ event, resolve }) => {
-  event.locals.supabase = createClient(PUBLIC_SUPABASE_URL, SUPABASE_SECRET_KEY, {
-    // cookies: {
-    //   getAll: () => event.cookies.getAll(),
-    //   setAll: (cookiesToSet: { name: string; value: string; options: Record<string, any> }[]) => {
-    //     cookiesToSet.forEach(({ name, value, options }) => {
-    //       event.cookies.set(name, value, { ...options, path: "/" });
-    //     });
-    //   },
-    // },
+  event.locals.supabase = createServerClient<Database>(PUBLIC_SUPABASE_URL, SUPABASE_SECRET_KEY, {
+    cookies: {
+      getAll: () => event.cookies.getAll(),
+      setAll: (cookiesToSet: { name: string; value: string; options: Record<string, any> }[]) => {
+        cookiesToSet.forEach(({ name, value, options }) => {
+          event.cookies.set(name, value, { ...options, path: "/" });
+        });
+      },
+    },
   });
 
   /**
