@@ -34,5 +34,8 @@ export const ContactSchema = z.object({
   email: z.string().email("Ungültige E-Mail-Adresse").max(255),
   subject: z.string().trim().min(1).max(255),
   message: z.string().trim().min(1).max(5000),
+  privacyPolicyAccepted: z
+    .boolean()
+    .refine((val) => val === true, "Die Datenschutzerklärung muss akzeptiert werden"),
   turnstileToken: z.string().trim().min(1),
 });

@@ -7,6 +7,7 @@
     email: "",
     subject: "",
     body: "",
+    privacyPolicyAccepted: false,
   });
   let cfToken = $state("");
   let error = $state<string | null>(null);
@@ -41,7 +42,7 @@
       }
 
       success = "Deine Nachricht wurde erfolgreich gesendet!";
-      mailData = { email: "", subject: "", body: "" };
+      mailData = { email: "", subject: "", body: "", privacyPolicyAccepted: false };
       cfToken = "";
       location.reload(); // Reload to reset Turnstile
     } catch (err) {
@@ -110,8 +111,13 @@
       disabled={isSubmitting}
     ></textarea>
 
+    <label class="dy-label mt-3">
+      <input type="checkbox" required bind:checked={mailData.privacyPolicyAccepted} class="dy-checkbox dy-checkbox-primary" />
+      Ich akzeptiere die <a href="/datenschutz" target="_blank" class="dy-link dy-link-primary">Datenschutzerklärung</a>.
+    </label>
+
     {#if cfToken}
-      <button type="submit" class="dy-btn dy-btn-primary dy-btn-soft dy-btn-wide mt-5" disabled={!cfToken || isSubmitting}>
+      <button type="submit" class="dy-btn dy-btn-primary dy-btn-soft dy-btn-wide mt-5" disabled={!cfToken || isSubmitting || !mailData.privacyPolicyAccepted}>
           {#if isSubmitting}
             <span class="dy-loading dy-loading-spinner"></span>
           {/if}
