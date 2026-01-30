@@ -11,7 +11,7 @@ export async function load({ locals }) {
 
 // Only used for Google OAuth, as Supabase handles Turnstile verification for other methods
 async function verifyCaptcha(token: string): Promise<boolean> {
-  const secretKey = process.env.CF_TURNSTILE_SECRET_KEY;
+  const secretKey = process.env.TURNSTILE_SECRET;
   if (!secretKey) {
     console.error("Cloudflare Turnstile secret key is not set");
     return false;
