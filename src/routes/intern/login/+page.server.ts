@@ -1,4 +1,5 @@
 import { fail, redirect } from "@sveltejs/kit";
+import { TURNSTILE_SECRET } from "$env/static/private";
 
 export async function load({ locals }) {
   if (locals.user && locals.session) {
@@ -11,8 +12,7 @@ export async function load({ locals }) {
 
 // Only used for Google OAuth, as Supabase handles Turnstile verification for other methods
 async function verifyCaptcha(token: string): Promise<boolean> {
-  const secretKey = process.env.TURNSTILE_SECRET;
-  if (!secretKey) {
+  if (!TURNSTILE_SECRET) {
     console.error("Cloudflare Turnstile secret key is not set");
     return false;
   }
@@ -23,7 +23,7 @@ async function verifyCaptcha(token: string): Promise<boolean> {
       "Content-Type": "application/x-www-form-urlencoded",
     },
     body: new URLSearchParams({
-      secret: secretKey,
+      secret: TURNSTILE_SECRET,
       response: token,
     }),
   });
