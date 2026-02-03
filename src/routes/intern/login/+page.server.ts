@@ -1,5 +1,6 @@
 import { fail, redirect } from "@sveltejs/kit";
 import { TURNSTILE_SECRET } from "$env/static/private";
+import * as Sentry from "@sentry/sveltekit";
 
 export async function load({ locals }) {
   if (locals.user && locals.session) {
@@ -14,6 +15,7 @@ export async function load({ locals }) {
 async function verifyCaptcha(token: string): Promise<boolean> {
   if (!TURNSTILE_SECRET) {
     console.error("Cloudflare Turnstile secret key is not set");
+    Sentry.captureException(new Error("Cloudflare Turnstile secret key is not set"));
     return false;
   }
 
@@ -61,6 +63,7 @@ export const actions = {
 
     if (err) {
       console.error("Error signing in with OAuth:", err.message);
+      Sentry.captureException(err);
       return fail(400, {
         message: "Fehler beim Google Login",
       });
