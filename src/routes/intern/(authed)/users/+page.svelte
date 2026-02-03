@@ -162,7 +162,7 @@
         </tr>
       {:else if users.length > 0}
         {#each users as user}
-          <tr class="transition duration-75 hover:bg-(--color-light-base-100)">
+          <tr class="hover:bg-(--color-light-base-100) transition duration-75">
             <td>{user.email}</td>
             <td><pre>{user.role}</pre></td>
             <td>{formatGermanDateTime(user.created_at)}</td>
@@ -180,7 +180,11 @@
               <button
                 class="dy-btn dy-btn-sm dy-btn-error"
                 onclick={async () => {
-                  if (confirm(`Bist du sicher, dass du diesen Benutzer löschen möchtest?\nE-Mail: ${user.email}`)) {
+                  if (
+                    confirm(
+                      `Bist du sicher, dass du diesen Benutzer löschen möchtest?\nE-Mail: ${user.email}`,
+                    )
+                  ) {
                     await deleteUser(user.email);
                   }
                 }}

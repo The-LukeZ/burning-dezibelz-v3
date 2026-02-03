@@ -16,16 +16,16 @@
   }}
 />
 
-<div class="dy-prose mx-auto w-full max-w-250 items-center justify-between p-4 py-5">
+<div class="dy-prose max-w-250 mx-auto w-full items-center justify-between p-4 py-5">
   <h1 class="text-3xl font-bold">Impressum</h1>
   <span class="dy-divider"></span>
   <h2 class="text-xl">Angaben gemäß § 5 TMG</h2>
   <article class="w-full">
     <ul class="list-none">
-      <li class="mt-0 mb-0">Jan Mehlhorn</li>
-      <li class="mt-0 mb-0">Poststraße 10</li>
-      <li class="mt-0 mb-0">09353 Oberlungwitz</li>
-      <li class="mt-0 mb-0">Deutschland</li>
+      <li class="mb-0 mt-0">Jan Mehlhorn</li>
+      <li class="mb-0 mt-0">Poststraße 10</li>
+      <li class="mb-0 mt-0">09353 Oberlungwitz</li>
+      <li class="mb-0 mt-0">Deutschland</li>
     </ul>
     <p>
       Email: <a href="mailto:burningdezibelz@gmail.com" target="_blank" class="dy-link-primary">

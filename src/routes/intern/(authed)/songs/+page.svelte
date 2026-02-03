@@ -109,7 +109,7 @@
 </button>
 
 {#if error}
-  <div class="dy-alert dy-alert-soft dy-alert-error mx-auto my-4 max-w-187.5">
+  <div class="dy-alert dy-alert-soft dy-alert-error max-w-187.5 mx-auto my-4">
     <span>{error}</span>
     <button class="dy-btn dy-btn-square dy-btn-dash dy-btn-error ml-auto" onclick={() => (error = null)}>
       <Trashcan />
@@ -117,7 +117,7 @@
   </div>
 {/if}
 
-<ul class="dy-list rounded-box bg-base-200 mx-auto mt-5 mb-20 max-w-187.5 shadow-md">
+<ul class="dy-list rounded-box bg-base-200 max-w-187.5 mx-auto mb-20 mt-5 shadow-md">
   {#if loading}
     <div class="flex w-full items-center justify-center">
       <span class="dy-loading dy-loading-dots"></span>
@@ -129,7 +129,7 @@
   {:else}
     {#each songs.filter((song) => !deletedSongs.includes(song.id)) as song}
       <li
-        class="flex items-center gap-2 rounded-2xl p-4 transition duration-75 hover:bg-(--color-light-base-100)"
+        class="hover:bg-(--color-light-base-100) flex items-center gap-2 rounded-2xl p-4 transition duration-75"
       >
         <div class="flex h-full grow flex-col gap-3 sm:flex-row">
           <input type="text" value={song.id} class="hidden" />
@@ -145,7 +145,7 @@
             />
             {#if focusedSongId === song.id}
               <div
-                class="border-base-300 bg-base-100 absolute top-full right-0 left-0 z-10 mt-1 max-h-40 overflow-y-auto rounded-lg border shadow-lg"
+                class="border-base-300 bg-base-100 absolute left-0 right-0 top-full z-10 mt-1 max-h-40 overflow-y-auto rounded-lg border shadow-lg"
               >
                 {#if song.artist.trim() && !uniqueArtists.some((artist) => artist.toLowerCase() === song.artist.toLowerCase())}
                   <button
@@ -186,8 +186,10 @@
   {/if}
 </ul>
 
-<div class="fixed right-0 bottom-0 left-0 flex w-full justify-end gap-2 p-4">
-  <button class="dy-btn dy-btn-secondary" onclick={revertChanges} disabled={loading}>Änderungen verwerfen</button>
+<div class="fixed bottom-0 left-0 right-0 flex w-full justify-end gap-2 p-4">
+  <button class="dy-btn dy-btn-secondary" onclick={revertChanges} disabled={loading}
+    >Änderungen verwerfen</button
+  >
   <button class="dy-btn dy-btn-primary" onclick={saveSongs} disabled={loading}>Änderungen speichern</button>
 </div>
 
@@ -224,7 +226,7 @@
       <span>Songtitel</span>
       <input type="text" name="title" placeholder="Songtitel" class="dy-input dy-input-md w-xs" required />
     </label>
-    <div class="relative w-xs">
+    <div class="w-xs relative">
       <label class="dy-floating-label">
         <span>Künstler</span>
         <input
@@ -241,7 +243,7 @@
       </label>
       {#if showArtistDropdown}
         <div
-          class="border-base-300 bg-base-100 absolute top-full right-0 left-0 z-10 mt-1 max-h-40 overflow-y-auto rounded-lg border shadow-lg"
+          class="border-base-300 bg-base-100 absolute left-0 right-0 top-full z-10 mt-1 max-h-40 overflow-y-auto rounded-lg border shadow-lg"
         >
           {#if artistInputValue.trim() && !uniqueArtists.some((artist) => artist.toLowerCase() === artistInputValue.toLowerCase())}
             <button

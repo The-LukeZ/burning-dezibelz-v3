@@ -30,7 +30,7 @@
 </div>
 
 <div class="overflow-x-auto">
-  <table class="dy-table dy-table-zebra table w-full min-w-md">
+  <table class="dy-table dy-table-zebra min-w-md table w-full">
     <thead>
       <tr>
         <th>Name</th>
@@ -53,7 +53,11 @@
                 disabled={loading}
                 onclickcapture={async (e) => {
                   e.stopPropagation();
-                  if (confirm("Bist du sicher, dass du diesen Veranstaltungsort löschen möchtest?\nID: " + venue.id)) {
+                  if (
+                    confirm(
+                      "Bist du sicher, dass du diesen Veranstaltungsort löschen möchtest?\nID: " + venue.id,
+                    )
+                  ) {
                     await handleDelete(venue.id);
                   }
                 }}

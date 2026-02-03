@@ -12,14 +12,15 @@
   }}
 />
 
-<div class="dy-prose mx-auto w-full max-w-250 items-center justify-between p-4 py-5">
+<div class="dy-prose max-w-250 mx-auto w-full items-center justify-between p-4 py-5">
   <h1 class="text-3xl font-bold">Datenschutz</h1>
   <span class="dy-divider"></span>
   <article class="prose">
     <section>
       <h2>1. Allgemeine Hinweise</h2>
       <p>
-        Der Schutz Ihrer persönlichen Daten ist uns ein wichtiges Anliegen. Nachfolgend informieren wir Sie darüber, wie wir Daten auf unserer Website verarbeiten.
+        Der Schutz Ihrer persönlichen Daten ist uns ein wichtiges Anliegen. Nachfolgend informieren wir Sie
+        darüber, wie wir Daten auf unserer Website verarbeiten.
       </p>
     </section>
 
@@ -27,53 +28,76 @@
       <h2>2. Hosting und Content Delivery Networks (CDN)</h2>
       <h3>Cloudflare</h3>
       <p>
-        Unsere Website wird bei Cloudflare gehostet. Um die Website auszuliefern, verarbeitet Cloudflare technische Informationen wie Ihre IP-Adresse, den verwendeten Browser und Zugriffszeiten. Diese Daten sind technisch notwendig, um die Website anzuzeigen und die Sicherheit zu gewährleisten. Weitere Informationen finden Sie in der <a href="https://www.cloudflare.com/privacypolicy/">Datenschutzerklärung von Cloudflare</a>.
+        Unsere Website wird bei Cloudflare gehostet. Um die Website auszuliefern, verarbeitet Cloudflare
+        technische Informationen wie Ihre IP-Adresse, den verwendeten Browser und Zugriffszeiten. Diese Daten
+        sind technisch notwendig, um die Website anzuzeigen und die Sicherheit zu gewährleisten. Weitere
+        Informationen finden Sie in der <a href="https://www.cloudflare.com/privacypolicy/"
+          >Datenschutzerklärung von Cloudflare</a
+        >.
       </p>
       <h3>Cloudflare R2</h3>
       <p>
-        Für die Auslieferung von Bildern nutzen wir Cloudflare R2. Auch hierbei können technische Verbindungsdaten (wie Ihre IP-Adresse) verarbeitet werden, um die Inhalte abzurufen.
+        Für die Auslieferung von Bildern nutzen wir Cloudflare R2. Auch hierbei können technische
+        Verbindungsdaten (wie Ihre IP-Adresse) verarbeitet werden, um die Inhalte abzurufen.
       </p>
       <h3>Cloudflare Turnstile</h3>
       <p>
-        Zum Schutz unserer Website vor Spam und Missbrauch setzen wir Cloudflare Turnstile beim internen Login ein. Dabei werden technische Daten wie Ihre IP-Adresse und Browserinformationen an Cloudflare übermittelt, um die Interaktion zu bewerten. Weitere Informationen finden Sie in der <a href="https://www.cloudflare.com/privacypolicy/">Datenschutzerklärung von Cloudflare</a>.
+        Zum Schutz unserer Website vor Spam und Missbrauch setzen wir Cloudflare Turnstile beim internen Login
+        ein. Dabei werden technische Daten wie Ihre IP-Adresse und Browserinformationen an Cloudflare
+        übermittelt, um die Interaktion zu bewerten. Weitere Informationen finden Sie in der <a
+          href="https://www.cloudflare.com/privacypolicy/">Datenschutzerklärung von Cloudflare</a
+        >.
       </p>
     </section>
 
     <section>
       <h2>3. Fehleranalyse mit Sentry</h2>
       <p>
-        Wir verwenden den Dienst Sentry (sentry.io, Functional Software, Inc.), um technische Fehler auf unserer Website zu erkennen und zu beheben.
+        Wir verwenden den Dienst Sentry (sentry.io, Functional Software, Inc.), um technische Fehler auf
+        unserer Website zu erkennen und zu beheben.
       </p>
       <p>
-        Im Falle eines Absturzes oder Fehlers werden Informationen an Sentry übertragen. Dazu gehören technische Daten wie Betriebssystem, Browserversion und ggf. die IP-Adresse. Diese Daten werden ausschließlich zur technischen Analyse und Verbesserung der Website-Stabilität genutzt. Weitere Informationen finden Sie in der <a href="https://sentry.io/privacy/">Datenschutzerklärung von Sentry</a>.
+        Im Falle eines Absturzes oder Fehlers werden Informationen an Sentry übertragen. Dazu gehören
+        technische Daten wie Betriebssystem, Browserversion und ggf. die IP-Adresse. Diese Daten werden
+        ausschließlich zur technischen Analyse und Verbesserung der Website-Stabilität genutzt. Weitere
+        Informationen finden Sie in der <a href="https://sentry.io/privacy/"
+          >Datenschutzerklärung von Sentry</a
+        >.
       </p>
     </section>
 
     <section>
       <h2>4. Nutzung von Supabase</h2>
       <p>
-        Unsere Website nutzt Supabase als Backend-Dienstleister und Datenbank. Supabase verarbeitet Daten gemäß ihrer <a href="https://supabase.com/privacy">Datenschutzerklärung</a>.
+        Unsere Website nutzt Supabase als Backend-Dienstleister und Datenbank. Supabase verarbeitet Daten
+        gemäß ihrer <a href="https://supabase.com/privacy">Datenschutzerklärung</a>.
       </p>
     </section>
 
     <section>
       <h2>5. Verarbeitung personenbezogener Daten</h2>
       <p>
-        Sie haben die Möglichkeit, beim Kontaktformular personenbezogene Daten wie die E-Mail-Adresse anzugeben. Diese Daten werden ausschließlich zur Bearbeitung Ihrer Anfrage verwendet und nicht an Dritte weitergegeben. Dies trifft auch auf den Betreff und die Nachricht zu, die Sie uns über das Kontaktformular senden.
+        Sie haben die Möglichkeit, beim Kontaktformular personenbezogene Daten wie die E-Mail-Adresse
+        anzugeben. Diese Daten werden ausschließlich zur Bearbeitung Ihrer Anfrage verwendet und nicht an
+        Dritte weitergegeben. Dies trifft auch auf den Betreff und die Nachricht zu, die Sie uns über das
+        Kontaktformular senden.
       </p>
       <p>
-        Die Verarbeitung dieser Daten erfolgt auf Grundlage Ihrer Einwilligung gemäß Art. 6 Abs. 1 lit. a DSGVO. Sie können Ihre Einwilligung jederzeit widerrufen, indem Sie uns kontaktieren.
+        Die Verarbeitung dieser Daten erfolgt auf Grundlage Ihrer Einwilligung gemäß Art. 6 Abs. 1 lit. a
+        DSGVO. Sie können Ihre Einwilligung jederzeit widerrufen, indem Sie uns kontaktieren.
       </p>
     </section>
 
     <section>
       <h2>6. Interner Bereich & Authentifizierung</h2>
       <p>
-        Unsere Website verfügt über einen internen Bereich, der ausschließlich für autorisierte Mitglieder der Band bestimmt ist. Man kann sich mittels Email + Passwort, Magic Link oder Google OAuth anmelden.
+        Unsere Website verfügt über einen internen Bereich, der ausschließlich für autorisierte Mitglieder der
+        Band bestimmt ist. Man kann sich mittels Email + Passwort, Magic Link oder Google OAuth anmelden.
       </p>
       <h3>Google OAuth</h3>
       <p>
-        Für den Zugang zum internen Bereich nutzen wir die Authentifizierung über Google. Wenn Sie sich als autorisiertes Mitglied anmelden, erhalten wir von Google folgende Daten:
+        Für den Zugang zum internen Bereich nutzen wir die Authentifizierung über Google. Wenn Sie sich als
+        autorisiertes Mitglied anmelden, erhalten wir von Google folgende Daten:
       </p>
       <ul class="list-inside list-disc">
         <li>E-Mail-Adresse</li>
@@ -81,14 +105,16 @@
         <li>Profilbild</li>
       </ul>
       <p>
-        Diese Daten dienen ausschließlich der Identifikation und Autorisierung für den Verwaltungsbereich. Ein Login für externe Besucher ist nicht vorgesehen und technisch unterbunden.
+        Diese Daten dienen ausschließlich der Identifikation und Autorisierung für den Verwaltungsbereich. Ein
+        Login für externe Besucher ist nicht vorgesehen und technisch unterbunden.
       </p>
     </section>
 
     <section>
       <h2>7. Kontakt</h2>
       <p>
-        Bei Fragen zum Datenschutz können Sie uns über die im <a href="/impressum">Impressum</a> angegebenen Kontaktdaten erreichen.
+        Bei Fragen zum Datenschutz können Sie uns über die im <a href="/impressum">Impressum</a> angegebenen Kontaktdaten
+        erreichen.
       </p>
     </section>
   </article>

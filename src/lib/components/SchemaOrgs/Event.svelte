@@ -19,7 +19,6 @@
     startDate: event.timestamp,
     image: image ? page.url.origin + buildImageUrl(image.r2_key, { format: "webp" }) : undefined,
     url: page.url.origin + concertHref(event.id, venue?.name ?? null),
-    
   });
 </script>
 

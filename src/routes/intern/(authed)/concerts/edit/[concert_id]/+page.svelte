@@ -45,7 +45,7 @@
     if (pageData.error !== untrack(() => error)) {
       error = pageData.error || null;
     }
-  })
+  });
 
   function handleImageSelect(image: DBImage) {
     if (!concert) return;
@@ -384,7 +384,7 @@
               class="dy-skeleton h-full w-full object-cover"
             />
             <div
-              class="absolute top-0 right-0 bottom-0 left-0 grid place-items-center opacity-0 transition-opacity duration-150"
+              class="absolute bottom-0 left-0 right-0 top-0 grid place-items-center opacity-0 transition-opacity duration-150"
               role="button"
               tabindex="0"
               onmouseover={addOpacity}
@@ -404,7 +404,8 @@
             </div>
           </div>
         {:else}
-          <button class="dy-btn dy-btn-outline" onclick={() => (imageSelect.open = true)}>Bild auswählen</button
+          <button class="dy-btn dy-btn-outline" onclick={() => (imageSelect.open = true)}
+            >Bild auswählen</button
           >
         {/if}
       </fieldset>

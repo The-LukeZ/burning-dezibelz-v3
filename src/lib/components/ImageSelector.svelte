@@ -29,7 +29,7 @@
   title="Select Image"
   closeOnBackdropClick={false}
   withXButton={false}
-  class="flex min-h-1/2 flex-col"
+  class="min-h-1/2 flex flex-col"
 >
   <div class="image-grid mt-4">
     {#each images as image}

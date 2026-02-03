@@ -6,7 +6,12 @@
   import PlaceholderConcertImage from "$lib/assets/PlaceholderConcertImage.svelte";
   import ContentContainer from "$lib/components/ContentContainer.svelte";
   import Head from "$lib/components/Head.svelte";
-  import { buildConcertDescription, buildConcertTitle, copyConcertLink, formatGermanDateTime } from "$lib/utils/concerts.js";
+  import {
+    buildConcertDescription,
+    buildConcertTitle,
+    copyConcertLink,
+    formatGermanDateTime,
+  } from "$lib/utils/concerts.js";
   import { fade, slide } from "svelte/transition";
 
   let { data } = $props();
@@ -75,7 +80,7 @@
           {@render backBtn()}
         </div>
       {:else}
-        <figure class="relative aspect-21/9 overflow-hidden">
+        <figure class="aspect-21/9 relative overflow-hidden">
           {#if imageUrl}
             <img src={imageUrl} class="size-full object-cover" alt={concert.name ?? "Privates Konzert"} />
           {:else}
@@ -87,7 +92,7 @@
           transition:slide={{ axis: "y" }}
         >
           <div class="flex flex-col gap-2">
-            <h2 class="text-2xl font-bold text-balance">{concert.name || "Privates Konzert"}</h2>
+            <h2 class="text-balance text-2xl font-bold">{concert.name || "Privates Konzert"}</h2>
             <span class="dy-badge dy-badge-md dy-badge-primary">
               {formatGermanDateTime(concert.timestamp)}
             </span>
@@ -160,7 +165,7 @@
           {#if concert.notes}
             <div class="flex flex-col gap-2">
               <h3 class="un-force text-lg font-semibold">Hinweise</h3>
-              <p class="text-base-content/80 text-sm whitespace-pre-wrap">{concert.notes}</p>
+              <p class="text-base-content/80 whitespace-pre-wrap text-sm">{concert.notes}</p>
             </div>
           {/if}
         </section>

@@ -33,8 +33,6 @@
         url: venueDetails.url,
       };
 
-
-
       const response = await fetch("/api/venues", {
         method: "POST",
         headers: {

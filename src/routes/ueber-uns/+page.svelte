@@ -83,7 +83,7 @@
               />
             </div>
             <!-- Overlay with roles -->
-            <div class="absolute right-0 bottom-0 left-0 bg-gradient-to-t from-black/80 to-transparent p-4">
+            <div class="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 to-transparent p-4">
               <div class="flex flex-wrap gap-1">
                 {#each member.roles as role}
                   <span class="dy-badge dy-badge-primary dy-badge-sm text-xs font-medium">

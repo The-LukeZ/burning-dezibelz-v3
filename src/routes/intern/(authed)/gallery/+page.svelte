@@ -287,7 +287,7 @@ Important note: we use goto() with { invalidateAll: true } to ensure that the pa
             <!-- svelte-ignore a11y_no_noninteractive_tabindex -->
             <div
               tabindex="0"
-              class="dy-card image-grid-item bg-base-200 max-w-md text-start drop-shadow-md drop-shadow-black/40 focus:ring-2"
+              class="dy-card image-grid-item bg-base-200 drop-shadow-black/40 max-w-md text-start drop-shadow-md focus:ring-2"
               onclick={() => viewImage(image.id)}
               onkeydown={(e) => {
                 if (e.key === "Enter" || e.key === " ") {
@@ -304,7 +304,7 @@ Important note: we use goto() with { invalidateAll: true } to ensure that the pa
                 />
                 <!-- TODO: Implement bulk deletion -->
                 <button
-                  class="dy-btn dy-btn-warning dy-btn-soft dy-btn-circle absolute top-2 right-2 z-10 shadow-md"
+                  class="dy-btn dy-btn-warning dy-btn-soft dy-btn-circle absolute right-2 top-2 z-10 shadow-md"
                   onclick={async (e) => {
                     e.stopPropagation();
                     await deleteImage(image.id);

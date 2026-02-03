@@ -14,7 +14,7 @@ export default defineConfig({
       },
       adapter: "cloudflare",
       autoInstrument: true,
-      autoUploadSourceMaps: true, 
+      autoUploadSourceMaps: true,
     }),
     tailwindcss(),
     sveltekit(),

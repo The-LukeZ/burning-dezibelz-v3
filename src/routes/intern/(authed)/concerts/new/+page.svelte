@@ -111,7 +111,9 @@
 
       if (!response.ok) {
         const errorData = await response.json();
-        throw new Error(errorData.error?.message || errorData.error || "Konzert konnte nicht erstellt werden");
+        throw new Error(
+          errorData.error?.message || errorData.error || "Konzert konnte nicht erstellt werden",
+        );
       }
 
       const newConcert = (await response.json()) as Concert;
@@ -241,7 +243,9 @@
       </SelectVenue>
 
       <p class="dy-label">
-        Ort nicht dabei? <a href="/intern/venues/new" class="dy-link hover:text-slate-300"> Neuen Ort hinzufügen </a>
+        Ort nicht dabei? <a href="/intern/venues/new" class="dy-link hover:text-slate-300">
+          Neuen Ort hinzufügen
+        </a>
       </p>
     </fieldset>
 
@@ -360,7 +364,7 @@
           class="dy-skeleton h-full w-full object-cover"
         />
         <div
-          class="absolute top-0 right-0 bottom-0 left-0 grid place-items-center opacity-0 transition-opacity duration-150"
+          class="absolute bottom-0 left-0 right-0 top-0 grid place-items-center opacity-0 transition-opacity duration-150"
           role="button"
           tabindex="0"
           onmouseover={addOpacity}

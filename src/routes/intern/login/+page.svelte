@@ -40,7 +40,7 @@
   }
 </script>
 
-<div class="absolute top-0 right-0 bottom-0 left-0 flex flex-col items-center justify-center gap-4 p-4">
+<div class="absolute bottom-0 left-0 right-0 top-0 flex flex-col items-center justify-center gap-4 p-4">
   <div class="w-full max-w-sm">
     <h1 class="mb-6 text-center text-2xl font-bold">Intern Login</h1>
 
@@ -89,21 +89,21 @@
       <button
         role="tab"
         class="dy-tab {activeMethod === 'password' ? 'dy-tab-active' : ''}"
-        onclick={() => setMethod('password')}
+        onclick={() => setMethod("password")}
       >
         Passwort
       </button>
       <button
         role="tab"
         class="dy-tab {activeMethod === 'magiclink' ? 'dy-tab-active' : ''}"
-        onclick={() => setMethod('magiclink')}
+        onclick={() => setMethod("magiclink")}
       >
         Magic Link
       </button>
       <button
         role="tab"
         class="dy-tab {activeMethod === 'google' ? 'dy-tab-active' : ''}"
-        onclick={() => setMethod('google')}
+        onclick={() => setMethod("google")}
       >
         Google
       </button>
@@ -115,12 +115,12 @@
         method="POST"
         action="?/password&next={encodeURIComponent(nextUrl)}"
         use:enhance={() => {
-        isLoading = true;
-        return async ({ update }) => {
-          await update();
-          isLoading = false;
-        };
-      }}
+          isLoading = true;
+          return async ({ update }) => {
+            await update();
+            isLoading = false;
+          };
+        }}
         class="flex flex-col gap-4"
       >
         <label class="dy-floating-label w-full">
@@ -128,7 +128,7 @@
             type="email"
             name="email"
             placeholder="E-Mail"
-            value={form?.email ?? ''}
+            value={form?.email ?? ""}
             required
             class="dy-input w-full"
             autocomplete="email"
@@ -143,7 +143,9 @@
               name="password"
               placeholder="Passwort"
               required
-              class="dy-input dy-join-item w-full {password.length > 0 && !isPasswordValid ? 'dy-input-error' : ''}"
+              class="dy-input dy-join-item w-full {password.length > 0 && !isPasswordValid
+                ? 'dy-input-error'
+                : ''}"
               autocomplete="current-password"
               bind:value={password}
             />
@@ -164,10 +166,14 @@
         </label>
 
         {#if password.length > 0 && !isPasswordValid}
-          <p class="text-sm text-error">Mindestens {passwordMinLength} Zeichen erforderlich</p>
+          <p class="text-error text-sm">Mindestens {passwordMinLength} Zeichen erforderlich</p>
         {/if}
 
-        <button type="submit" class="dy-btn dy-btn-primary w-full" disabled={isLoading || !cfToken || !isPasswordValid}>
+        <button
+          type="submit"
+          class="dy-btn dy-btn-primary w-full"
+          disabled={isLoading || !cfToken || !isPasswordValid}
+        >
           {#if isLoading}
             <span class="dy-loading dy-loading-spinner"></span>
           {/if}
@@ -182,12 +188,12 @@
         method="POST"
         action="?/magiclink&next={encodeURIComponent(nextUrl)}"
         use:enhance={() => {
-        isLoading = true;
-        return async ({ update }) => {
-          await update();
-          isLoading = false;
-        };
-      }}
+          isLoading = true;
+          return async ({ update }) => {
+            await update();
+            isLoading = false;
+          };
+        }}
         class="flex flex-col gap-4"
       >
         <label class="dy-floating-label w-full">
@@ -242,12 +248,12 @@
       </form>
     {/if}
 
-    <div class="mt-6 text-center justify-center w-full">
-      <Turnstile bind:token={cfToken} onerror={(e) => error = e} />
+    <div class="mt-6 w-full justify-center text-center">
+      <Turnstile bind:token={cfToken} onerror={(e) => (error = e)} />
     </div>
 
     <!-- Zurück-Link -->
-    <div class="mt-6 text-center flex flex-col gap-4">
+    <div class="mt-6 flex flex-col gap-4 text-center">
       {#if activeMethod !== "google"}
         <p class="text-sm text-gray-400">
           Kein Konto?

@@ -8,7 +8,7 @@
 
 <section class="dy-prose mx-auto cursor-default px-4 py-8">
   <div
-    class="dy-avatar dy-avatar-placeholder mb-4 aspect-square size-24 rounded-full shadow-xl shadow-gray-600/25 select-none"
+    class="dy-avatar dy-avatar-placeholder mb-4 aspect-square size-24 select-none rounded-full shadow-xl shadow-gray-600/25"
   >
     <div class="dy-skeleton absolute size-full rounded-full text-white/70">
       <span class="text-3xl">{page.data.user?.email?.split("@")[0].charAt(0)}</span>

@@ -15,7 +15,7 @@
   let password = $state("");
   let passwordVisible = $state(false);
   let passwordConfirm = $state("");
-  
+
   const passwordMinLength = 8;
   const passwordErrors = $derived.by(() => {
     const errors: string[] = [];
@@ -27,14 +27,11 @@
     }
     return errors;
   });
-  
-  const isPasswordValid = $derived(
-    password.length >= passwordMinLength && 
-    password === passwordConfirm
-  );
+
+  const isPasswordValid = $derived(password.length >= passwordMinLength && password === passwordConfirm);
 </script>
 
-<div class="absolute top-0 right-0 bottom-0 left-0 flex flex-col items-center justify-center gap-4 p-4">
+<div class="absolute bottom-0 left-0 right-0 top-0 flex flex-col items-center justify-center gap-4 p-4">
   <div class="w-full max-w-sm">
     <h1 class="mb-6 text-center text-2xl font-bold">Registrierung</h1>
 
@@ -111,7 +108,11 @@
           placeholder="Passwort"
           required
           minlength="8"
-          class="dy-input w-full {password.length > 0 && password.length < passwordMinLength ? 'dy-input-error' : password.length >= passwordMinLength ? 'dy-input-success' : ''}"
+          class="dy-input w-full {password.length > 0 && password.length < passwordMinLength
+            ? 'dy-input-error'
+            : password.length >= passwordMinLength
+              ? 'dy-input-success'
+              : ''}"
           autocomplete="new-password"
           bind:value={password}
         />
@@ -126,7 +127,11 @@
             placeholder="Passwort bestätigen"
             required
             minlength="8"
-            class="dy-input dy-join-item w-full {passwordConfirm.length > 0 && password !== passwordConfirm ? 'dy-input-error' : passwordConfirm.length > 0 && password === passwordConfirm ? 'dy-input-success' : ''}"
+            class="dy-input dy-join-item w-full {passwordConfirm.length > 0 && password !== passwordConfirm
+              ? 'dy-input-error'
+              : passwordConfirm.length > 0 && password === passwordConfirm
+                ? 'dy-input-success'
+                : ''}"
             autocomplete="new-password"
             bind:value={passwordConfirm}
           />
@@ -148,7 +153,7 @@
 
       <!-- Password validation feedback -->
       {#if passwordErrors.length > 0}
-        <ul class="text-sm text-error list-disc list-inside">
+        <ul class="text-error list-inside list-disc text-sm">
           {#each passwordErrors as err}
             <li>{err}</li>
           {/each}
@@ -158,16 +163,20 @@
       <!-- Hidden field for captcha token -->
       <input type="hidden" name="cf-turnstile-response" value={cfToken} />
 
-      <button type="submit" class="dy-btn dy-btn-primary w-full" disabled={isLoading || !cfToken || !isPasswordValid}>
+      <button
+        type="submit"
+        class="dy-btn dy-btn-primary w-full"
+        disabled={isLoading || !cfToken || !isPasswordValid}
+      >
         {#if isLoading || !cfToken}
           <span class="dy-loading dy-loading-spinner"></span>
         {/if}
         Registrieren
       </button>
     </form>
-    
-    <div class="mt-6 text-center justify-center w-full">
-      <Turnstile bind:token={cfToken} onerror={(e) => error = e} />
+
+    <div class="mt-6 w-full justify-center text-center">
+      <Turnstile bind:token={cfToken} onerror={(e) => (error = e)} />
     </div>
 
     <!-- Link zum Login -->

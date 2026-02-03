@@ -6,7 +6,7 @@
   import "$lib/stores/events.svelte.js";
   import { onMount } from "svelte";
   import { slide } from "svelte/transition";
-  import { invalidate } from '$app/navigation';
+  import { invalidate } from "$app/navigation";
   import "../app.css";
 
   let { data, children } = $props();
@@ -26,17 +26,17 @@
     if (session) {
       console.log("User is logged in:", $state.snapshot(session.user));
     }
-  })
+  });
 
   onMount(() => {
-		const { data } = supabase.auth.onAuthStateChange((event, _session) => {
-			if (_session?.expires_at !== session?.expires_at) {
-				invalidate('supabase:auth')
-			}
-		});
+    const { data } = supabase.auth.onAuthStateChange((event, _session) => {
+      if (_session?.expires_at !== session?.expires_at) {
+        invalidate("supabase:auth");
+      }
+    });
 
-		return () => data.subscription.unsubscribe();
-	});
+    return () => data.subscription.unsubscribe();
+  });
 </script>
 
 <Navbar />

@@ -65,7 +65,7 @@
       {@const isPublic = concert.type === "public"}
       {@const concertTitle = isPublic ? concert.name : "Privates Konzert"}
       <div
-        class="dy-card w-full max-w-96 bg-(--color-light-base-100) shadow-sm transition duration-150 hover:-translate-y-1"
+        class="dy-card bg-(--color-light-base-100) w-full max-w-96 shadow-sm transition duration-150 hover:-translate-y-1"
       >
         <figure class="relative aspect-video">
           {#if concert.image}

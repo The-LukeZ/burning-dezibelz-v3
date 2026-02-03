@@ -1,7 +1,8 @@
 <script lang="ts">
   import { onMount } from "svelte";
   import { goto } from "$app/navigation";
-  import { page } from "$app/state";4
+  import { page } from "$app/state";
+  4;
 
   let error = $state<string | null>(null);
 

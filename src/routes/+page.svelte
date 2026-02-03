@@ -75,7 +75,7 @@
             firstSection?.scrollIntoView({ behavior: "smooth" });
           }}
         >
-          <ChevronDown class="hidden size-18 rounded-full drop-shadow-md drop-shadow-black lg:block" />
+          <ChevronDown class="size-18 drop-shadow-black hidden rounded-full drop-shadow-md lg:block" />
         </button>
       </div>
     </div>
@@ -144,7 +144,7 @@
           <img src="/ringkeller_1748128961.webp" alt="Im Ringkeller, März 2025" />
         </figure>
         <div class="dy-card-body short-about justify-around sm:text-lg">
-          <h2 class="dy-card-title block text-2xl font-bold text-balance">
+          <h2 class="dy-card-title block text-balance text-2xl font-bold">
             Wir sind die <strong>Burning Dezibelz</strong>!
           </h2>
           <p>

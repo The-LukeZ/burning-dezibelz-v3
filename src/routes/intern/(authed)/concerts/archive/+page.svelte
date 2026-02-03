@@ -47,14 +47,16 @@
 
 <div class="flex flex-col items-center justify-between gap-2 md:flex-row">
   <h1 class="text-2xl font-bold">Konzertverwaltung (Archiv)</h1>
-  <div class="grid grid-cols-1 gap-2 md:grid-cols-2 items-center ml-auto">
-    <a href="/intern/concerts" class="dy-btn dy-btn-soft dy-btn-success dy-btn-sm"> 📅 Anstehende Konzerte </a>
+  <div class="ml-auto grid grid-cols-1 items-center gap-2 md:grid-cols-2">
+    <a href="/intern/concerts" class="dy-btn dy-btn-soft dy-btn-success dy-btn-sm">
+      📅 Anstehende Konzerte
+    </a>
     <a href="/intern/concerts/new?back=archive" class="dy-btn dy-btn-soft">Konzert hinzufügen</a>
   </div>
 </div>
 
 <div class="overflow-x-auto">
-  <table class="dy-table dy-table-zebra table w-full min-w-md">
+  <table class="dy-table dy-table-zebra min-w-md table w-full">
     <thead>
       <tr>
         <th>Datum</th>
@@ -92,7 +94,9 @@
                 disabled={loading}
                 onclickcapture={async (e) => {
                   e.stopPropagation();
-                  if (confirm("Bist du sicher, dass du dieses Konzert löschen möchtest?\nID: " + concert.id)) {
+                  if (
+                    confirm("Bist du sicher, dass du dieses Konzert löschen möchtest?\nID: " + concert.id)
+                  ) {
                     await handleDelete(concert.id);
                   }
                 }}

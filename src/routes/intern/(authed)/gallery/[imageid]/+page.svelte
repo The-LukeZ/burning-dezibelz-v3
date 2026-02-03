@@ -2,11 +2,11 @@
   import { goto } from "$app/navigation";
   import { page } from "$app/state";
   import {
-      buildImageUrl,
-      mimeTypeToExtension,
-      normalizeFolderName,
-      normalizeName,
-      removeExtension,
+    buildImageUrl,
+    mimeTypeToExtension,
+    normalizeFolderName,
+    normalizeName,
+    removeExtension,
   } from "$lib";
   import ChevronLeft from "$lib/assets/ChevronLeft.svelte";
   import ExpandArrows from "$lib/assets/ExpandArrows.svelte";
@@ -172,7 +172,7 @@
       <div class="flex w-full flex-col items-center lg:w-1/2">
         <div class="bg-base-200 dy-skeleton relative w-full max-w-lg overflow-hidden rounded-lg shadow-lg">
           <img src={buildImageUrl(image.r2_key)} alt={image.name} class="h-full w-full object-contain" />
-          <div class="absolute inset-0 top-0 right-0 bottom-0 left-0 grid place-items-center">
+          <div class="absolute inset-0 bottom-0 left-0 right-0 top-0 grid place-items-center">
             <button
               class="dy-btn dy-btn-ghost dy-btn-warning dy-btn-square dy-btn-xl"
               onclick={() => (imageOnFullDisplay = true)}
@@ -287,7 +287,7 @@
     <div class="big-image-container" transition:scale>
       <img src={buildImageUrl(image.r2_key)} alt={image.name} class="rounded-lg shadow-lg" />
       <button
-        class="dy-btn dy-btn-soft dy-btn-warning dy-btn-square absolute top-2 right-2"
+        class="dy-btn dy-btn-soft dy-btn-warning dy-btn-square absolute right-2 top-2"
         onclick={() => (imageOnFullDisplay = false)}
       >
         <XIcon />

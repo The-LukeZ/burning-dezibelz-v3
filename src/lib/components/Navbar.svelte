@@ -88,7 +88,7 @@
   {/if}
 {/snippet}
 
-<nav class="dy-navbar fixed top-0 right-0 left-0 z-50 h-(--navbar-height) bg-black/15 backdrop-blur-md">
+<nav class="dy-navbar h-(--navbar-height) fixed left-0 right-0 top-0 z-50 bg-black/15 backdrop-blur-md">
   <div class="mx-auto flex h-full w-full max-w-7xl items-center justify-between">
     {#if !isDashboard}
       <div class="navbar-branding md:w-1/2">
@@ -133,7 +133,7 @@
         <!-- svelte-ignore a11y_no_noninteractive_tabindex -->
         <ul
           tabindex="0"
-          class="dy-dropdown-content dy-menu dy-menu-xl bg-base-300 rounded-box mobile-menu mt-3 p-2 drop-shadow-lg drop-shadow-white/15"
+          class="dy-dropdown-content dy-menu dy-menu-xl bg-base-300 rounded-box mobile-menu drop-shadow-white/15 mt-3 p-2 drop-shadow-lg"
         >
           {@render navbarLinks()}
         </ul>

@@ -57,7 +57,7 @@
         </tr>
       {:else}
         {#each data.songs as song}
-          <tr class="transition duration-75 hover:bg-(--color-light-base-100)">
+          <tr class="hover:bg-(--color-light-base-100) transition duration-75">
             <td>{song.title}</td>
             <td>{song.artist}</td>
             <td class="size-4">

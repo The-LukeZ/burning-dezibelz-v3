@@ -76,7 +76,7 @@
 
 <!-- svelte-ignore a11y_click_events_have_key_events, a11y_no_static_element_interactions -->
 <div
-  class="fixed inset-0 z-[700] grid place-items-center bg-black/25 backdrop-blur-xs transition-all duration-150"
+  class="backdrop-blur-xs fixed inset-0 z-[700] grid place-items-center bg-black/25 transition-all duration-150"
   class:hidden={!open}
   class:pointer-events-auto={open}
   onclick={() => {
