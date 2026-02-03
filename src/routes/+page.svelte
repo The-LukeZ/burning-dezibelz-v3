@@ -60,7 +60,7 @@
 
 <div id="gradient-start-point" class="bg-base-300 relative w-full">
   <main class="z-10 min-h-screen">
-    <div bind:this={banner} class="relative max-w-[100%] bg-black">
+    <div bind:this={banner} class="relative max-w-full bg-black">
       <span class="h-8 w-full bg-black"></span>
       <img
         id="banner-image"
@@ -139,7 +139,7 @@
 
     <section class="px-4 py-16 md:px-8">
       {@render heading("ueber", "Über uns")}
-      <div class="dy-card sm:dy-card-side bg-base-100 container mx-auto max-w-[1000px] shadow-sm">
+      <div class="dy-card sm:dy-card-side bg-base-100 container mx-auto max-w-250 shadow-sm">
         <figure class="sm:max-w-1/2">
           <img src="/ringkeller_1748128961.webp" alt="Im Ringkeller, März 2025" />
         </figure>
