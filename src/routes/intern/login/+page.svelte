@@ -215,6 +215,7 @@
       <!-- Google Login -->
     {:else}
       <form method="POST" action="?/google&next={encodeURIComponent(nextUrl)}" class="flex flex-col gap-4">
+        <input type="hidden" name="cf-turnstile-response" value={cfToken} />
         <button
           type="submit"
           class="dy-btn dy-btn-lg w-full gap-2 bg-white text-black hover:bg-[#3b3b3b] hover:text-white"
